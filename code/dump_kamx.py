@@ -1,4 +1,6 @@
 #Working with a single file
+from matplotlib import use
+use('agg')
 import pyart
 import os
 import sys
@@ -42,5 +44,10 @@ if __name__ == '__main__':
     radar_codes.save_latest_kamx_kdp_png_s3(radar)
     radar_codes.save_latest_kamx_zdr_png_s3(radar)
     radar_codes.save_latest_kamx_vr_png_s3(radar)
+    dateme = netCDF4.num2date(radar.time['data'][0], radar.time['units'])
+    mystr = datetime.datetime.strftime(dateme, '%Y%m%d_%H%M%S')
+    ofilename = '/data/irma_kamx/kamx_' + mystr + '.nc'
+    pyart.io.write_cfradial(ofilename, radar)
+
 
 
